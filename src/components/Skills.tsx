@@ -1,12 +1,13 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useInView } from "react-intersection-observer";
 
 type Skill = { name: string; icon: string };
 
-const categories: { label: string; skills: Skill[] }[] = [
+const categories: { labelKey: "frontend" | "backend" | "desktop" | "tools"; skills: Skill[] }[] = [
   {
-    label: "Frontend",
+    labelKey: "frontend",
     skills: [
       { name: "React", icon: "⚛️" },
       { name: "Next.js", icon: "▲" },
@@ -17,7 +18,7 @@ const categories: { label: string; skills: Skill[] }[] = [
     ],
   },
   {
-    label: "Backend",
+    labelKey: "backend",
     skills: [
       { name: "Node.js", icon: "⬡" },
       { name: "Express", icon: "Ex" },
@@ -30,7 +31,7 @@ const categories: { label: string; skills: Skill[] }[] = [
     ],
   },
   {
-    label: "Desktop",
+    labelKey: "desktop",
     skills: [
       { name: ".NET 9", icon: "N" },
       { name: "C#", icon: "C#" },
@@ -40,7 +41,7 @@ const categories: { label: string; skills: Skill[] }[] = [
     ],
   },
   {
-    label: "Herramientas",
+    labelKey: "tools",
     skills: [
       { name: "Git", icon: "⑂" },
       { name: "GitHub", icon: "⊙" },
@@ -81,6 +82,7 @@ function SkillBadge({ skill }: { skill: Skill }) {
 }
 
 export default function Skills() {
+  const t = useTranslations("skills");
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
 
   return (
@@ -95,19 +97,19 @@ export default function Skills() {
             className="text-sm font-medium uppercase tracking-widest mb-3"
             style={{ color: "var(--accent)" }}
           >
-            Skills
+            {t("eyebrow")}
           </p>
           <h2
             className="text-3xl md:text-4xl font-bold tracking-tight"
             style={{ color: "var(--text)" }}
           >
-            Tecnologías
+            {t("title")}
           </h2>
           <p
             className="mt-4 text-base max-w-xl leading-relaxed"
             style={{ color: "var(--text-muted)" }}
           >
-            Stack completo para construir y desplegar productos web modernos.
+            {t("subtitle")}
           </p>
         </div>
 
@@ -120,12 +122,12 @@ export default function Skills() {
           }}
         >
           {categories.map((cat) => (
-            <div key={cat.label}>
+            <div key={cat.labelKey}>
               <h3
                 className="text-xs font-semibold uppercase tracking-widest mb-4"
                 style={{ color: "var(--text-muted)" }}
               >
-                {cat.label}
+                {t(cat.labelKey)}
               </h3>
               <div className="flex flex-wrap gap-3">
                 {cat.skills.map((skill) => (

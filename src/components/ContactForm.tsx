@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { Send, CheckCircle, AlertCircle } from "lucide-react";
 
 type Status = "idle" | "loading" | "success" | "error";
 
 export default function ContactForm() {
+  const t = useTranslations("contact.form");
   const [status, setStatus] = useState<Status>("idle");
   const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
 
@@ -33,11 +35,15 @@ export default function ContactForm() {
 
     // Mailto fallback — replace with Resend/EmailJS when ready
     try {
+      const subject = form.subject || t("subjectFallback", { name: form.name });
+      const body = t("mailBody", {
+        name: form.name,
+        email: form.email,
+        message: form.message,
+      });
       const mailto = `mailto:hidalgomanu@hotmail.com?subject=${encodeURIComponent(
-        form.subject || `Contacto desde portfolio — ${form.name}`
-      )}&body=${encodeURIComponent(
-        `Nombre: ${form.name}\nEmail: ${form.email}\n\n${form.message}`
-      )}`;
+        subject
+      )}&body=${encodeURIComponent(body)}`;
       window.location.href = mailto;
       setStatus("success");
     } catch {
@@ -75,17 +81,17 @@ export default function ContactForm() {
       >
         <CheckCircle size={40} style={{ color: "#22c55e" }} />
         <h3 className="text-xl font-semibold" style={{ color: "var(--text)" }}>
-          ¡Mensaje enviado!
+          {t("successTitle")}
         </h3>
         <p style={{ color: "var(--text-muted)", fontSize: "14px" }}>
-          Te respondo a la brevedad. Gracias por escribirme.
+          {t("successText")}
         </p>
         <button
           onClick={() => { setStatus("idle"); setForm({ name: "", email: "", subject: "", message: "" }); }}
           className="mt-2 text-sm underline"
           style={{ color: "var(--accent)" }}
         >
-          Enviar otro mensaje
+          {t("sendAnother")}
         </button>
       </div>
     );
@@ -95,27 +101,27 @@ export default function ContactForm() {
     <form onSubmit={handleSubmit} className="flex flex-col gap-5">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <div>
-          <label style={labelStyle}>Nombre</label>
+          <label style={labelStyle}>{t("name")}</label>
           <input
             name="name"
             value={form.name}
             onChange={handleChange}
             required
-            placeholder="Tu nombre"
+            placeholder={t("namePlaceholder")}
             style={inputStyle}
             onFocus={(e) => (e.currentTarget.style.borderColor = "var(--accent)")}
             onBlur={(e) => (e.currentTarget.style.borderColor = "var(--bg-border)")}
           />
         </div>
         <div>
-          <label style={labelStyle}>Email</label>
+          <label style={labelStyle}>{t("email")}</label>
           <input
             name="email"
             type="email"
             value={form.email}
             onChange={handleChange}
             required
-            placeholder="tu@email.com"
+            placeholder={t("emailPlaceholder")}
             style={inputStyle}
             onFocus={(e) => (e.currentTarget.style.borderColor = "var(--accent)")}
             onBlur={(e) => (e.currentTarget.style.borderColor = "var(--bg-border)")}
@@ -124,12 +130,12 @@ export default function ContactForm() {
       </div>
 
       <div>
-        <label style={labelStyle}>Asunto</label>
+        <label style={labelStyle}>{t("subject")}</label>
         <input
           name="subject"
           value={form.subject}
           onChange={handleChange}
-          placeholder="¿De qué se trata?"
+          placeholder={t("subjectPlaceholder")}
           style={inputStyle}
           onFocus={(e) => (e.currentTarget.style.borderColor = "var(--accent)")}
           onBlur={(e) => (e.currentTarget.style.borderColor = "var(--bg-border)")}
@@ -137,14 +143,14 @@ export default function ContactForm() {
       </div>
 
       <div>
-        <label style={labelStyle}>Mensaje</label>
+        <label style={labelStyle}>{t("message")}</label>
         <textarea
           name="message"
           value={form.message}
           onChange={handleChange}
           required
           rows={6}
-          placeholder="Contame sobre tu proyecto o idea..."
+          placeholder={t("messagePlaceholder")}
           style={{ ...inputStyle, resize: "vertical", minHeight: "140px" }}
           onFocus={(e) => (e.currentTarget.style.borderColor = "var(--accent)")}
           onBlur={(e) => (e.currentTarget.style.borderColor = "var(--bg-border)")}
@@ -157,7 +163,7 @@ export default function ContactForm() {
           style={{ background: "rgba(239,68,68,0.1)", color: "#ef4444", border: "1px solid rgba(239,68,68,0.2)" }}
         >
           <AlertCircle size={16} />
-          Algo salió mal. Intentá de nuevo o escribime directamente.
+          {t("error")}
         </div>
       )}
 
@@ -170,18 +176,18 @@ export default function ContactForm() {
         {status === "loading" ? (
           <>
             <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-            Enviando...
+            {t("sending")}
           </>
         ) : (
           <>
             <Send size={16} />
-            Enviar mensaje
+            {t("send")}
           </>
         )}
       </button>
 
       <p className="text-xs text-center" style={{ color: "var(--text-muted)" }}>
-        También podés escribirme directamente a{" "}
+        {t("directEmail")}{" "}
         <a
           href="mailto:hidalgomanu@hotmail.com"
           style={{ color: "var(--accent)" }}

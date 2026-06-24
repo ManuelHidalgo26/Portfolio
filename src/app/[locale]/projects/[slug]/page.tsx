@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, Check, ExternalLink, Github } from "lucide-react";
-import { projects, getProject, typeMeta } from "@/lib/projects";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
+import { projects, getProject, typeMeta, type Locale } from "@/lib/projects";
+import { alternatesFor } from "@/i18n/metadata";
 
-type Params = { slug: string };
+type Params = { locale: string; slug: string };
 
-export function generateStaticParams(): Params[] {
+export function generateStaticParams() {
   return projects.map((p) => ({ slug: p.slug }));
 }
 
@@ -15,14 +17,17 @@ export async function generateMetadata({
 }: {
   params: Promise<Params>;
 }): Promise<Metadata> {
-  const { slug } = await params;
-  const project = getProject(slug);
-  if (!project) return { title: "Proyecto no encontrado — Manuel Hidalgo" };
+  const { locale, slug } = await params;
+  const t = await getTranslations({ locale, namespace: "metadata" });
+  const project = getProject(slug, locale as Locale);
+  if (!project) return { title: t("notFound") };
+  const suffix = t("caseStudySuffix");
   return {
-    title: `${project.title} — Caso de estudio | Manuel Hidalgo`,
+    title: `${project.title} — ${suffix} | Manuel Hidalgo`,
     description: project.description,
+    alternates: alternatesFor(`/projects/${slug}`),
     openGraph: {
-      title: `${project.title} — Caso de estudio`,
+      title: `${project.title} — ${suffix}`,
       description: project.description,
       type: "article",
     },
@@ -34,8 +39,10 @@ export default async function ProjectCaseStudy({
 }: {
   params: Promise<Params>;
 }) {
-  const { slug } = await params;
-  const project = getProject(slug);
+  const { locale, slug } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations({ locale, namespace: "caseStudy" });
+  const project = getProject(slug, locale as Locale);
   if (!project) notFound();
 
   const meta = typeMeta[project.type];
@@ -50,7 +57,7 @@ export default async function ProjectCaseStudy({
           className="link-muted inline-flex items-center gap-2 text-sm font-medium mb-10"
         >
           <ArrowLeft size={16} />
-          Volver a proyectos
+          {t("back")}
         </Link>
 
         {/* Header */}
@@ -59,7 +66,7 @@ export default async function ProjectCaseStudy({
             className="inline-block text-xs font-medium px-2.5 py-1 rounded-full"
             style={{ background: meta.bg, color: meta.color }}
           >
-            {meta.label}
+            {project.typeLabel}
           </span>
           {cs?.year && (
             <span className="text-xs font-mono" style={{ color: "var(--text-muted)" }}>
@@ -93,7 +100,7 @@ export default async function ProjectCaseStudy({
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-medium text-sm transition-opacity hover:opacity-90"
                 style={{ background: "var(--accent-dim)", color: "#fff" }}
               >
-                Ver demo en vivo
+                {t("liveDemo")}
                 <ExternalLink size={15} />
               </a>
             )}
@@ -110,7 +117,7 @@ export default async function ProjectCaseStudy({
                 }}
               >
                 <Github size={15} />
-                Ver código
+                {t("viewCode")}
               </a>
             )}
           </div>
@@ -136,21 +143,21 @@ export default async function ProjectCaseStudy({
         {cs ? (
           <div className="flex flex-col gap-12">
             {/* Contexto */}
-            <Section label="El problema">
+            <Section label={t("problem")}>
               <p className="text-base leading-relaxed" style={{ color: "var(--text-muted)" }}>
                 {cs.context}
               </p>
             </Section>
 
             {/* Rol */}
-            <Section label="Mi rol">
+            <Section label={t("myRole")}>
               <p className="text-base leading-relaxed" style={{ color: "var(--text-muted)" }}>
                 {cs.role}
               </p>
             </Section>
 
             {/* Highlights */}
-            <Section label="Qué construí">
+            <Section label={t("whatIBuilt")}>
               <ul className="flex flex-col gap-3">
                 {cs.highlights.map((h) => (
                   <li key={h} className="flex items-start gap-3">
@@ -169,7 +176,7 @@ export default async function ProjectCaseStudy({
             </Section>
 
             {/* Decisiones técnicas */}
-            <Section label="Decisiones técnicas">
+            <Section label={t("techDecisions")}>
               <div className="flex flex-col gap-4">
                 {cs.decisions.map((d) => (
                   <div
@@ -200,17 +207,17 @@ export default async function ProjectCaseStudy({
           style={{ background: "var(--bg-card)", border: "1px solid var(--bg-border)" }}
         >
           <h2 className="text-xl md:text-2xl font-bold tracking-tight mb-3" style={{ color: "var(--text)" }}>
-            ¿Te interesa un proyecto así?
+            {t("ctaTitle")}
           </h2>
           <p className="text-sm mb-6 max-w-md mx-auto" style={{ color: "var(--text-muted)" }}>
-            Estoy disponible para proyectos freelance y posiciones full-time. Hablemos.
+            {t("ctaSubtitle")}
           </p>
           <Link
             href="/contact"
             className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-medium text-sm transition-opacity hover:opacity-90"
             style={{ background: "var(--accent-dim)", color: "#fff" }}
           >
-            Ponerse en contacto
+            {t("ctaButton")}
             <ArrowRight size={16} />
           </Link>
         </div>

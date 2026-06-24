@@ -1,13 +1,33 @@
 import type { Metadata } from "next";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import ProjectCard from "@/components/ProjectCard";
-import { projects } from "@/lib/projects";
+import { getProjects, type Locale } from "@/lib/projects";
+import { alternatesFor } from "@/i18n/metadata";
 
-export const metadata: Metadata = {
-  title: "Proyectos — Manuel Hidalgo",
-  description: "Todos los proyectos de Manuel Hidalgo: ecommerce full-stack, cliente real, plataformas web y landing pages.",
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "metadata" });
+  return {
+    title: t("projectsTitle"),
+    description: t("projectsDescription"),
+    alternates: alternatesFor("/projects"),
+  };
+}
 
-export default function ProjectsPage() {
+export default async function ProjectsPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations({ locale, namespace: "projectsPage" });
+  const projects = getProjects(locale as Locale);
+
   return (
     <main className="min-h-screen pt-32 pb-24 px-6">
       <div className="max-w-6xl mx-auto">
@@ -17,20 +37,19 @@ export default function ProjectsPage() {
             className="text-sm font-medium uppercase tracking-widest mb-3"
             style={{ color: "var(--accent)" }}
           >
-            Portfolio
+            {t("eyebrow")}
           </p>
           <h1
             className="text-4xl md:text-5xl font-bold tracking-tight mb-4"
             style={{ color: "var(--text)" }}
           >
-            Todos los proyectos
+            {t("title")}
           </h1>
           <p
             className="text-base max-w-xl leading-relaxed"
             style={{ color: "var(--text-muted)" }}
           >
-            Desde clientes reales hasta plataformas propias — cada proyecto
-            refleja una solución concreta a un problema real.
+            {t("subtitle")}
           </p>
         </div>
 

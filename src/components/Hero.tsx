@@ -1,10 +1,12 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { ArrowDown, Github, Linkedin } from "lucide-react";
+import { Link } from "@/i18n/navigation";
 
 export default function Hero() {
+  const t = useTranslations("hero");
   const dotRef = useRef<HTMLDivElement>(null);
 
   // Subtle mouse parallax on the glow
@@ -46,7 +48,7 @@ export default function Hero() {
           className="w-1.5 h-1.5 rounded-full animate-pulse"
           style={{ background: "#22c55e" }}
         />
-        Disponible para proyectos
+        {t("badge")}
       </div>
 
       {/* Name */}
@@ -70,7 +72,7 @@ export default function Hero() {
         className="text-lg md:text-xl font-medium mb-4"
         style={{ color: "var(--text-muted)" }}
       >
-        Full Stack Developer
+        {t("title")}
       </p>
 
       {/* Description */}
@@ -78,11 +80,9 @@ export default function Hero() {
         className="max-w-xl text-base md:text-lg leading-relaxed mb-10"
         style={{ color: "var(--text-muted)" }}
       >
-        Construyo aplicaciones web rápidas y escalables con{" "}
-        <span style={{ color: "var(--text)" }}>React</span>,{" "}
-        <span style={{ color: "var(--text)" }}>Node.js</span> y{" "}
-        <span style={{ color: "var(--text)" }}>Next.js</span>.
-        Desde el diseño hasta el deploy.
+        {t.rich("description", {
+          b: (chunks) => <span style={{ color: "var(--text)" }}>{chunks}</span>,
+        })}
       </p>
 
       {/* CTAs */}
@@ -92,7 +92,7 @@ export default function Hero() {
           className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-medium text-sm transition-all duration-200 hover:scale-105"
           style={{ background: "var(--accent-dim)", color: "#fff" }}
         >
-          Ver mis proyectos
+          {t("ctaProjects")}
           <ArrowDown size={16} />
         </Link>
         <Link
@@ -106,7 +106,7 @@ export default function Hero() {
           onMouseEnter={(e) => (e.currentTarget.style.borderColor = "var(--accent)")}
           onMouseLeave={(e) => (e.currentTarget.style.borderColor = "var(--bg-border)")}
         >
-          Hablemos
+          {t("ctaContact")}
         </Link>
       </div>
 

@@ -1,10 +1,12 @@
 "use client";
 
-import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { ArrowUpRight, ExternalLink, Github } from "lucide-react";
-import { type Project, typeMeta } from "@/lib/projects";
+import { Link } from "@/i18n/navigation";
+import { type LocalizedProject, typeMeta } from "@/lib/projects";
 
-export default function ProjectCard({ project }: { project: Project }) {
+export default function ProjectCard({ project }: { project: LocalizedProject }) {
+  const t = useTranslations("projectCard");
   const meta = typeMeta[project.type];
   const caseHref = `/projects/${project.slug}`;
   const hasCase = !!project.caseStudy;
@@ -39,7 +41,7 @@ export default function ProjectCard({ project }: { project: Project }) {
             className="inline-block text-xs font-medium px-2.5 py-1 rounded-full mb-3"
             style={{ background: meta.bg, color: meta.color }}
           >
-            {meta.label}
+            {project.typeLabel}
           </span>
           <h3 className="text-lg font-semibold" style={{ color: "var(--text)" }}>
             {hasCase ? (
@@ -93,7 +95,7 @@ export default function ProjectCard({ project }: { project: Project }) {
                 onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.8")}
                 onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
               >
-                Ver caso
+                {t("viewCase")}
                 <ArrowUpRight size={14} />
               </Link>
             )}
@@ -110,7 +112,7 @@ export default function ProjectCard({ project }: { project: Project }) {
                   onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-muted)")}
                 >
                   <Github size={14} />
-                  Código
+                  {t("code")}
                 </a>
               )}
               {project.liveUrl && (
@@ -123,7 +125,7 @@ export default function ProjectCard({ project }: { project: Project }) {
                   onMouseEnter={(e) => (e.currentTarget.style.color = "var(--text)")}
                   onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-muted)")}
                 >
-                  Demo
+                  {t("demo")}
                   <ExternalLink size={14} />
                 </a>
               )}

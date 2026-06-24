@@ -1,18 +1,21 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { Menu, X } from "lucide-react";
+import { Link } from "@/i18n/navigation";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 const links = [
-  { label: "Inicio", href: "/" },
-  { label: "Proyectos", href: "/#projects" },
-  { label: "Cotizador", href: "/cotizador" },
-  { label: "Sobre mí", href: "/about" },
-  { label: "Contacto", href: "/contact" },
-];
+  { key: "inicio", href: "/" },
+  { key: "proyectos", href: "/#projects" },
+  { key: "cotizador", href: "/cotizador" },
+  { key: "sobreMi", href: "/about" },
+  { key: "contacto", href: "/contact" },
+] as const;
 
 export default function Navbar() {
+  const t = useTranslations("nav");
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -62,35 +65,41 @@ export default function Navbar() {
                 onMouseEnter={(e) => (e.currentTarget.style.color = "var(--text)")}
                 onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-muted)")}
               >
-                {l.label}
+                {t(l.key)}
               </Link>
             </li>
           ))}
         </ul>
 
-        {/* CTA */}
-        <Link
-          href="/contact"
-          className="hidden md:inline-flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-lg transition-all duration-200"
-          style={{
-            background: "var(--accent-dim)",
-            color: "#fff",
-          }}
-          onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.85")}
-          onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
-        >
-          Hablemos
-        </Link>
+        {/* Right side: language + CTA */}
+        <div className="hidden md:flex items-center gap-4">
+          <LanguageSwitcher />
+          <Link
+            href="/contact"
+            className="inline-flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-lg transition-all duration-200"
+            style={{
+              background: "var(--accent-dim)",
+              color: "#fff",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.85")}
+            onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
+          >
+            {t("cta")}
+          </Link>
+        </div>
 
         {/* Mobile toggle */}
-        <button
-          onClick={() => setOpen(!open)}
-          className="md:hidden p-2 rounded-lg"
-          style={{ color: "var(--text-muted)" }}
-          aria-label="Toggle menu"
-        >
-          {open ? <X size={20} /> : <Menu size={20} />}
-        </button>
+        <div className="flex md:hidden items-center gap-2">
+          <LanguageSwitcher />
+          <button
+            onClick={() => setOpen(!open)}
+            className="p-2 rounded-lg"
+            style={{ color: "var(--text-muted)" }}
+            aria-label="Toggle menu"
+          >
+            {open ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </div>
       </nav>
 
       {/* Mobile menu */}
@@ -107,7 +116,7 @@ export default function Navbar() {
               style={{ color: "var(--text-muted)" }}
               onClick={() => setOpen(false)}
             >
-              {l.label}
+              {t(l.key)}
             </Link>
           ))}
           <Link
@@ -116,7 +125,7 @@ export default function Navbar() {
             style={{ background: "var(--accent-dim)", color: "#fff" }}
             onClick={() => setOpen(false)}
           >
-            Hablemos
+            {t("cta")}
           </Link>
         </div>
       )}

@@ -1,11 +1,18 @@
 "use client";
 
-import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { ArrowRight, Mail } from "lucide-react";
 import { useInView } from "react-intersection-observer";
+import { Link } from "@/i18n/navigation";
+
+const statNumbers = ["4", "1", "3", "100%"];
 
 export default function AboutCTA() {
+  const t = useTranslations("aboutCta");
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
+  const statLabels = t.raw("stats") as string[];
+  const bold = (chunks: React.ReactNode) => <span style={{ color: "var(--accent)" }}>{chunks}</span>;
+  const boldText = (chunks: React.ReactNode) => <span style={{ color: "var(--text)" }}>{chunks}</span>;
 
   return (
     <>
@@ -30,32 +37,27 @@ export default function AboutCTA() {
                 className="text-sm font-medium uppercase tracking-widest mb-3"
                 style={{ color: "var(--accent)" }}
               >
-                Sobre mí
+                {t("eyebrow")}
               </p>
               <h2
                 className="text-3xl md:text-4xl font-bold tracking-tight mb-6"
                 style={{ color: "var(--text)" }}
               >
-                Desarrollador Full Stack
+                {t("titleLine1")}
                 <br />
-                <span style={{ color: "var(--accent)" }}>con visión de producto</span>
+                <span style={{ color: "var(--accent)" }}>{t("titleLine2")}</span>
               </h2>
               <p
                 className="text-base leading-relaxed mb-4"
                 style={{ color: "var(--text-muted)" }}
               >
-                Soy Manuel, desarrollador Full Stack con base en Argentina.
-                Me especializo en construir aplicaciones web modernas — desde
-                el diseño de la interfaz hasta el despliegue en producción.
+                {t("p1")}
               </p>
               <p
                 className="text-base leading-relaxed mb-8"
                 style={{ color: "var(--text-muted)" }}
               >
-                Trabajo con{" "}
-                <span style={{ color: "var(--text)" }}>React, Next.js y Node.js</span>,
-                y tengo experiencia tanto en proyectos de clientes reales como
-                en el desarrollo de plataformas propias.
+                {t.rich("p2", { b: boldText })}
               </p>
               <Link
                 href="/about"
@@ -64,21 +66,16 @@ export default function AboutCTA() {
                 onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.8")}
                 onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
               >
-                Más sobre mí
+                {t("moreAbout")}
                 <ArrowRight size={16} />
               </Link>
             </div>
 
             {/* Stats */}
             <div className="grid grid-cols-2 gap-4">
-              {[
-                { number: "4", label: "Proyectos construidos" },
-                { number: "1", label: "Cliente en producción" },
-                { number: "3", label: "Apps full-stack" },
-                { number: "100%", label: "Compromiso" },
-              ].map((stat) => (
+              {statNumbers.map((number, i) => (
                 <div
-                  key={stat.label}
+                  key={i}
                   className="p-6 rounded-2xl"
                   style={{
                     background: "var(--bg-card)",
@@ -89,10 +86,10 @@ export default function AboutCTA() {
                     className="text-3xl font-bold mb-1 font-mono"
                     style={{ color: "var(--accent)" }}
                   >
-                    {stat.number}
+                    {number}
                   </p>
                   <p className="text-sm" style={{ color: "var(--text-muted)" }}>
-                    {stat.label}
+                    {statLabels[i]}
                   </p>
                 </div>
               ))}
@@ -111,16 +108,13 @@ export default function AboutCTA() {
             className="text-3xl md:text-5xl font-bold tracking-tight mb-6"
             style={{ color: "var(--text)" }}
           >
-            ¿Tienes un proyecto
-            <br />
-            <span style={{ color: "var(--accent)" }}>en mente?</span>
+            {t.rich("ctaTitle", { b: bold })}
           </h2>
           <p
             className="text-lg leading-relaxed mb-10"
             style={{ color: "var(--text-muted)" }}
           >
-            Estoy disponible para proyectos freelance y posiciones full-time.
-            Hablemos sobre cómo puedo ayudarte.
+            {t("ctaSubtitle")}
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
@@ -129,7 +123,7 @@ export default function AboutCTA() {
               style={{ background: "var(--accent-dim)", color: "#fff" }}
             >
               <Mail size={18} />
-              Escribime
+              {t("ctaWrite")}
             </Link>
             <a
               href="https://www.linkedin.com/in/manuel-hidalgo-casta%C3%B1os-29116b299/"

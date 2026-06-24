@@ -1,0 +1,205 @@
+{
+  "nav": {
+    "inicio": "Home",
+    "proyectos": "Projects",
+    "cotizador": "Get a quote",
+    "sobreMi": "About",
+    "contacto": "Contact",
+    "cta": "Let's talk"
+  },
+  "hero": {
+    "badge": "Available for work",
+    "title": "Full Stack Developer",
+    "description": "I build fast, scalable web apps with <b>React</b>, <b>Node.js</b> and <b>Next.js</b>. From design to deployment.",
+    "ctaProjects": "View my work",
+    "ctaContact": "Let's talk"
+  },
+  "projectsSection": {
+    "eyebrow": "Projects",
+    "title": "What I've built",
+    "subtitle": "Real projects — from clients to my own platforms. Each one solves a concrete problem.",
+    "viewAll": "View all projects"
+  },
+  "projectCard": {
+    "viewCase": "View case study",
+    "code": "Code",
+    "demo": "Demo"
+  },
+  "skills": {
+    "eyebrow": "Skills",
+    "title": "Technologies",
+    "subtitle": "Full stack to build and ship modern web products.",
+    "frontend": "Frontend",
+    "backend": "Backend",
+    "desktop": "Desktop",
+    "tools": "Tools"
+  },
+  "aboutCta": {
+    "eyebrow": "About me",
+    "titleLine1": "Full Stack Developer",
+    "titleLine2": "with product vision",
+    "p1": "I'm Manuel, a Full Stack Developer based in Argentina. I specialize in building modern web applications — from interface design to production deployment.",
+    "p2": "I work with <b>React, Next.js and Node.js</b>, and I have experience both on real client projects and building my own platforms.",
+    "moreAbout": "More about me",
+    "stats": [
+      "Projects built",
+      "Client in production",
+      "Full-stack apps",
+      "Commitment"
+    ],
+    "ctaTitle": "Got a project <b>in mind?</b>",
+    "ctaSubtitle": "I'm available for freelance projects and full-time roles. Let's talk about how I can help you.",
+    "ctaWrite": "Get in touch"
+  },
+  "footer": {
+    "rights": "All rights reserved"
+  },
+  "about": {
+    "eyebrow": "About",
+    "titleLine1": "Full Stack Developer",
+    "titleLine2": "passionate about building",
+    "p1": "Hi, I'm <b>Manuel Hidalgo Castaños</b>, a Full Stack Developer based in Argentina. I specialize in building modern web products — from interface design to production deployment.",
+    "p2": "My main stack is <b>React and Next.js</b> on the frontend, and <b>Node.js + MongoDB</b> on the backend. I have experience working with real clients and building my own platforms.",
+    "p3": "I'm available for freelance projects and full-time opportunities. If you have a project in mind, I'd love to hear about it.",
+    "stats": [
+      "Projects built",
+      "Real client",
+      "Years learning",
+      "Certifications"
+    ],
+    "timelineEyebrow": "Journey",
+    "timelineTitle": "How I got here",
+    "timeline": [
+      {
+        "year": "2022",
+        "title": "Getting started in programming",
+        "description": "I started learning HTML, CSS and JavaScript on my own. I completed the Web Development course at CoderHouse."
+      },
+      {
+        "year": "2023",
+        "title": "Specializing in React",
+        "description": "I focused on the React ecosystem: hooks, context, routing. I earned the JavaScript and React certifications at CoderHouse."
+      },
+      {
+        "year": "2024",
+        "title": "First real client",
+        "description": "I built the complete website for HyenaFuel, a real sports supplements brand. My first project with a production deployment for a client."
+      },
+      {
+        "year": "2025",
+        "title": "Full Stack & Next.js",
+        "description": "I expanded my stack with Node.js, Express and MongoDB. I built my first full-stack platform —a raffles app with authentication and dashboard— and this portfolio."
+      },
+      {
+        "year": "2026",
+        "title": "SaaS platforms and desktop apps",
+        "description": "I built HyenaHub, a SaaS platform for trainers with real-time chat, payments and reports (Next.js + Prisma + PostgreSQL + Socket.io), and GymForge, an offline-first desktop gym management system in .NET 9 with Avalonia. I added Prisma, PostgreSQL, Redis and .NET to my stack."
+      }
+    ],
+    "certsEyebrow": "Education",
+    "certsTitle": "Certifications",
+    "certificates": [
+      { "title": "React JS", "institution": "CoderHouse", "year": "2023" },
+      { "title": "Frontend Development", "institution": "CoderHouse", "year": "2023" },
+      { "title": "JavaScript", "institution": "CoderHouse", "year": "2022" },
+      { "title": "Web Development", "institution": "CoderHouse", "year": "2022" }
+    ],
+    "stackEyebrow": "Stack",
+    "stackTitle": "Technologies I use",
+    "stackFrontend": "Frontend",
+    "stackBackend": "Backend",
+    "stackDesktop": "Desktop",
+    "stackTools": "Tools",
+    "ctaTitle": "Let's work together?",
+    "ctaSubtitle": "I'm available for freelance projects and full-time roles. Get in touch and I'll reply within 24 hours.",
+    "ctaButton": "Get in touch"
+  },
+  "projectsPage": {
+    "eyebrow": "Portfolio",
+    "title": "All projects",
+    "subtitle": "From real clients to my own platforms — each project reflects a concrete solution to a real problem."
+  },
+  "caseStudy": {
+    "back": "Back to projects",
+    "liveDemo": "View live demo",
+    "viewCode": "View code",
+    "problem": "The problem",
+    "myRole": "My role",
+    "whatIBuilt": "What I built",
+    "techDecisions": "Technical decisions",
+    "ctaTitle": "Interested in a project like this?",
+    "ctaSubtitle": "I'm available for freelance projects and full-time roles. Let's talk.",
+    "ctaButton": "Get in touch"
+  },
+  "contact": {
+    "eyebrow": "Contact",
+    "title": "Let's talk",
+    "subtitle": "Got a project, an idea or just want to chat? Drop me a line and I'll get back to you soon.",
+    "availLabel": "Availability",
+    "availValue": "Available for work",
+    "responseLabel": "Response time",
+    "responseValue": "< 24 hours",
+    "modeLabel": "Type",
+    "modeValue": "Freelance · Full-time",
+    "form": {
+      "name": "Name",
+      "namePlaceholder": "Your name",
+      "email": "Email",
+      "emailPlaceholder": "you@email.com",
+      "subject": "Subject",
+      "subjectPlaceholder": "What's it about?",
+      "message": "Message",
+      "messagePlaceholder": "Tell me about your project or idea...",
+      "send": "Send message",
+      "sending": "Sending...",
+      "successTitle": "Message sent!",
+      "successText": "I'll get back to you shortly. Thanks for reaching out.",
+      "sendAnother": "Send another message",
+      "error": "Something went wrong. Try again or email me directly.",
+      "directEmail": "You can also email me directly at",
+      "subjectFallback": "Portfolio contact — {name}",
+      "mailBody": "Name: {name}\nEmail: {email}\n\n{message}"
+    }
+  },
+  "cotizadorPage": {
+    "eyebrow": "Quote",
+    "title": "Build your site and see the price",
+    "subtitle": "Choose your site type, add the extras you need and the total updates on its own. When you're ready, request a quote in one click."
+  },
+  "quoter": {
+    "regionLabel": "Where are you from?",
+    "regionLocal": "Argentina",
+    "regionExterior": "International",
+    "currencyLabel": "Currency",
+    "detected": "We detected you're in",
+    "detectedMismatch": " — check the selected region",
+    "step1": "Choose your site type",
+    "step2": "Add what you need",
+    "step3": "Monthly maintenance (optional)",
+    "quantity": "Quantity",
+    "perUnit": " ea",
+    "free": "Free",
+    "perMonth": "/mo",
+    "budgetTitle": "Your quote",
+    "from": "From",
+    "maintenance": "+ Maintenance",
+    "disclaimer": "Estimated price. The final amount may vary depending on the actual scope of the project.",
+    "whatsapp": "Request via WhatsApp",
+    "viaForm": "Send via the form",
+    "formSubject": "Quote from the calculator"
+  },
+  "metadata": {
+    "homeTitle": "Manuel Hidalgo — Full Stack Developer",
+    "homeDescription": "Full Stack Developer specializing in React, Node.js and modern web applications. Available for freelance projects and full-time roles.",
+    "aboutTitle": "About — Manuel Hidalgo",
+    "aboutDescription": "Full Stack Developer with experience in React, Next.js and Node.js. Discover my journey, certifications and tech stack.",
+    "projectsTitle": "Projects — Manuel Hidalgo",
+    "projectsDescription": "All of Manuel Hidalgo's projects: real client, SaaS platforms, desktop app and more.",
+    "contactTitle": "Contact — Manuel Hidalgo",
+    "contactDescription": "Let's talk about your project. I'm available for freelance and full-time roles.",
+    "cotizadorTitle": "Website price calculator — Manuel Hidalgo",
+    "cotizadorDescription": "Build your website and see the price in real time. Choose your site type, add the extras you need and request your quote via WhatsApp.",
+    "caseStudySuffix": "Case study",
+    "notFound": "Project not found — Manuel Hidalgo"
+  }
+}

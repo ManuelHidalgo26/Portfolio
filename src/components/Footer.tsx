@@ -1,17 +1,21 @@
 "use client";
 
-import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { Github, Linkedin, Mail } from "lucide-react";
+import { Link } from "@/i18n/navigation";
 
 const navLinks = [
-  { label: "Inicio", href: "/" },
-  { label: "Proyectos", href: "/projects" },
-  { label: "Cotizador", href: "/cotizador" },
-  { label: "Sobre mí", href: "/about" },
-  { label: "Contacto", href: "/contact" },
-];
+  { key: "inicio", href: "/" },
+  { key: "proyectos", href: "/projects" },
+  { key: "cotizador", href: "/cotizador" },
+  { key: "sobreMi", href: "/about" },
+  { key: "contacto", href: "/contact" },
+] as const;
 
 export default function Footer() {
+  const t = useTranslations("nav");
+  const tf = useTranslations("footer");
+
   return (
     <footer
       className="px-6 py-12"
@@ -39,7 +43,7 @@ export default function Footer() {
                 onMouseEnter={(e) => (e.currentTarget.style.color = "var(--text)")}
                 onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-muted)")}
               >
-                {l.label}
+                {t(l.key)}
               </Link>
             ))}
           </nav>
@@ -88,7 +92,7 @@ export default function Footer() {
           className="mt-8 pt-8 text-center text-xs"
           style={{ borderTop: "1px solid var(--bg-border)", color: "var(--text-muted)" }}
         >
-          © {new Date().getFullYear()} Manuel Hidalgo Castaños — Todos los derechos reservados
+          © {new Date().getFullYear()} Manuel Hidalgo Castaños — {tf("rights")}
         </div>
       </div>
     </footer>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useTranslations, useLocale } from "next-intl";
 import {
   Check,
   Minus,
@@ -10,25 +11,34 @@ import {
   Globe,
   MapPin,
 } from "lucide-react";
+import { Link } from "@/i18n/navigation";
 import {
-  addOns,
-  baseTypes,
   config,
   formatMoney,
-  maintenancePlans,
   priceValue,
-  type AddOn,
+  getBaseTypes,
+  getAddOns,
+  getMaintenancePlans,
+  type LocalizedAddOn,
   type Currency,
   type Region,
 } from "@/lib/pricing";
+import { type Locale } from "@/lib/projects";
 
 export default function Quoter() {
+  const t = useTranslations("quoter");
+  const locale = useLocale() as Locale;
+
   const [region, setRegion] = useState<Region>("local");
   const [currency, setCurrency] = useState<Currency>("USD");
   const [baseId, setBaseId] = useState<string>("landing");
   const [selected, setSelected] = useState<Record<string, number>>({});
   const [maintenanceId, setMaintenanceId] = useState<string>("none");
   const [geo, setGeo] = useState<{ countryName: string; isArgentina: boolean } | null>(null);
+
+  const baseTypes = getBaseTypes(locale);
+  const addOns = getAddOns(locale);
+  const maintenancePlans = getMaintenancePlans(locale);
 
   // Detección de país por IP (auto-selecciona la región al cargar).
   useEffect(() => {
@@ -56,7 +66,7 @@ export default function Quoter() {
   const detectedRegion: Region | null = geo ? (geo.isArgentina ? "local" : "exterior") : null;
   const mismatch = detectedRegion !== null && detectedRegion !== region;
 
-  const toggleAddon = (a: AddOn) =>
+  const toggleAddon = (a: LocalizedAddOn) =>
     setSelected((prev) => {
       const next = { ...prev };
       if (next[a.id]) delete next[a.id];
@@ -83,22 +93,30 @@ export default function Quoter() {
     };
   }, [base, chosenAddOns, selected, maintenance, region, currency]);
 
+  // El mensaje que se le envía a Manuel va SIEMPRE en español (lo lee él).
   const summaryText = useMemo(() => {
+    const baseEs = getBaseTypes("es").find((b) => b.id === baseId)!;
+    const maintEs = getMaintenancePlans("es").find((m) => m.id === maintenanceId)!;
+    const addOnsEs = getAddOns("es");
+
     const lines: string[] = [];
     lines.push("¡Hola Manuel! Armé un presupuesto en tu cotizador:");
     lines.push("");
-    lines.push(`• Tipo de sitio: ${base.label} — ${formatMoney(priceValue(base.price, region, currency), currency)}`);
+    lines.push(
+      `• Tipo de sitio: ${baseEs.label} — ${formatMoney(priceValue(baseEs.price, region, currency), currency)}`
+    );
     if (chosenAddOns.length) {
       lines.push("• Agregados:");
       chosenAddOns.forEach((a) => {
+        const aEs = addOnsEs.find((x) => x.id === a.id)!;
         const qty = selected[a.id];
-        const unit = priceValue(a.price, region, currency);
-        const label = a.quantifiable && qty > 1 ? `${a.label} (×${qty})` : a.label;
+        const unit = priceValue(aEs.price, region, currency);
+        const label = aEs.quantifiable && qty > 1 ? `${aEs.label} (×${qty})` : aEs.label;
         lines.push(`   - ${label} — ${formatMoney(unit * qty, currency)}`);
       });
     }
     if (maintenanceId !== "none") {
-      lines.push(`• Mantenimiento: ${maintenance.label} — ${formatMoney(monthly, currency)}/mes`);
+      lines.push(`• Mantenimiento: ${maintEs.label} — ${formatMoney(monthly, currency)}/mes`);
     }
     lines.push("");
     lines.push(`TOTAL (pago único): ${formatMoney(oneTime, currency)}`);
@@ -110,7 +128,7 @@ export default function Quoter() {
       if (mismatch) lines.push("⚠️ La región elegida NO coincide con el país detectado");
     }
     return lines.join("\n");
-  }, [base, chosenAddOns, selected, maintenance, maintenanceId, monthly, oneTime, region, currency, geo, mismatch]);
+  }, [baseId, chosenAddOns, selected, maintenanceId, monthly, oneTime, region, currency, geo, mismatch]);
 
   const whatsappHref = `https://wa.me/${config.whatsappNumber}?text=${encodeURIComponent(summaryText)}`;
   const formHref = `/contact?asunto=${encodeURIComponent("Presupuesto desde el cotizador")}&mensaje=${encodeURIComponent(summaryText)}`;
@@ -123,16 +141,16 @@ export default function Quoter() {
         <div>
           <div className="flex flex-wrap gap-6">
             <Toggle
-              label="¿De dónde sos?"
+              label={t("regionLabel")}
               options={[
-                { id: "local", label: "Argentina", icon: <MapPin size={14} /> },
-                { id: "exterior", label: "Exterior", icon: <Globe size={14} /> },
+                { id: "local", label: t("regionLocal"), icon: <MapPin size={14} /> },
+                { id: "exterior", label: t("regionExterior"), icon: <Globe size={14} /> },
               ]}
               value={region}
               onChange={(v) => changeRegion(v as Region)}
             />
             <Toggle
-              label="Moneda"
+              label={t("currencyLabel")}
               options={[
                 { id: "USD", label: "USD" },
                 { id: "ARS", label: "ARS", disabled: region === "exterior" },
@@ -144,15 +162,15 @@ export default function Quoter() {
           {geo && (
             <p className="mt-3 text-xs flex items-center gap-1.5" style={{ color: "var(--text-muted)" }}>
               <MapPin size={12} style={{ color: "var(--accent)" }} />
-              Detectamos que estás en{" "}
+              {t("detected")}{" "}
               <span style={{ color: "var(--text)" }}>{geo.countryName}</span>
-              {mismatch && " — verificá la región seleccionada"}
+              {mismatch && t("detectedMismatch")}
             </p>
           )}
         </div>
 
         {/* 1. Base */}
-        <Step n={1} title="Elegí el tipo de sitio">
+        <Step n={1} title={t("step1")}>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {baseTypes.map((b) => {
               const active = b.id === baseId;
@@ -185,7 +203,7 @@ export default function Quoter() {
         </Step>
 
         {/* 2. Add-ons */}
-        <Step n={2} title="Agregá lo que necesites">
+        <Step n={2} title={t("step2")}>
           <div className="flex flex-col gap-2">
             {addOns.map((a) => {
               const active = !!selected[a.id];
@@ -222,7 +240,7 @@ export default function Quoter() {
                         <span className="text-sm font-mono shrink-0" style={{ color: active ? "var(--accent)" : "var(--text-muted)" }}>
                           {a.quantifiable ? "+ " : ""}
                           {formatMoney(priceValue(a.price, region, currency), currency)}
-                          {a.quantifiable ? " c/u" : ""}
+                          {a.quantifiable ? t("perUnit") : ""}
                         </span>
                       </div>
                       <p className="text-xs leading-relaxed mt-1" style={{ color: "var(--text-muted)" }}>
@@ -235,7 +253,7 @@ export default function Quoter() {
                   {active && a.quantifiable && (
                     <div className="flex items-center gap-3 px-4 pb-4 pl-12">
                       <span className="text-xs" style={{ color: "var(--text-muted)" }}>
-                        Cantidad
+                        {t("quantity")}
                       </span>
                       <div className="flex items-center gap-2">
                         <Stepper onClick={() => setQty(a.id, qty - 1)}><Minus size={14} /></Stepper>
@@ -253,7 +271,7 @@ export default function Quoter() {
         </Step>
 
         {/* 3. Maintenance */}
-        <Step n={3} title="Mantenimiento mensual (opcional)">
+        <Step n={3} title={t("step3")}>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {maintenancePlans.map((m) => {
               const active = m.id === maintenanceId;
@@ -278,7 +296,7 @@ export default function Quoter() {
                     {m.description}
                   </p>
                   <span className="text-sm font-mono" style={{ color: "var(--accent)" }}>
-                    {price > 0 ? `${formatMoney(price, currency)}/mes` : "Gratis"}
+                    {price > 0 ? `${formatMoney(price, currency)}${t("perMonth")}` : t("free")}
                   </span>
                 </button>
               );
@@ -294,7 +312,7 @@ export default function Quoter() {
           style={{ background: "var(--bg-card)", border: "1px solid var(--bg-border)" }}
         >
           <h3 className="text-sm font-semibold uppercase tracking-widest mb-5" style={{ color: "var(--accent)" }}>
-            Tu presupuesto
+            {t("budgetTitle")}
           </h3>
 
           <div className="flex flex-col gap-3 mb-5">
@@ -318,7 +336,7 @@ export default function Quoter() {
           <div className="pt-5" style={{ borderTop: "1px solid var(--bg-border)" }}>
             <div className="flex items-end justify-between gap-2">
               <span className="text-xs uppercase tracking-widest" style={{ color: "var(--text-muted)" }}>
-                Desde
+                {t("from")}
               </span>
               <span className="text-2xl font-bold font-mono" style={{ color: "var(--text)" }}>
                 {formatMoney(oneTime, currency)}
@@ -327,17 +345,17 @@ export default function Quoter() {
             {monthly > 0 && (
               <div className="flex items-center justify-between gap-2 mt-2">
                 <span className="text-xs" style={{ color: "var(--text-muted)" }}>
-                  + Mantenimiento
+                  {t("maintenance")}
                 </span>
                 <span className="text-sm font-mono" style={{ color: "var(--text-muted)" }}>
-                  {formatMoney(monthly, currency)}/mes
+                  {formatMoney(monthly, currency)}{t("perMonth")}
                 </span>
               </div>
             )}
           </div>
 
           <p className="text-[11px] leading-relaxed mt-4 mb-5" style={{ color: "var(--text-muted)" }}>
-            Precio estimado. El valor final puede variar según el alcance real del proyecto.
+            {t("disclaimer")}
           </p>
 
           <div className="flex flex-col gap-3">
@@ -349,16 +367,16 @@ export default function Quoter() {
               style={{ background: "#22c55e", color: "#062b14" }}
             >
               <MessageCircle size={16} />
-              Pedir por WhatsApp
+              {t("whatsapp")}
             </a>
-            <a
+            <Link
               href={formHref}
               className="inline-flex items-center justify-center gap-2 py-3 rounded-xl font-medium text-sm transition-colors"
               style={{ background: "transparent", border: "1px solid var(--bg-border)", color: "var(--text)" }}
             >
               <Send size={15} />
-              Enviar por el formulario
-            </a>
+              {t("viaForm")}
+            </Link>
           </div>
         </div>
       </div>

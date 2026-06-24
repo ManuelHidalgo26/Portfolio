@@ -1,15 +1,17 @@
 "use client";
 
-import { useRef } from "react";
+import { useTranslations, useLocale } from "next-intl";
 import { useInView } from "react-intersection-observer";
-import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { Link } from "@/i18n/navigation";
 import ProjectCard from "./ProjectCard";
-import { projects } from "@/lib/projects";
+import { getProjects, type Locale } from "@/lib/projects";
 
 export default function Projects() {
+  const t = useTranslations("projectsSection");
+  const locale = useLocale() as Locale;
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
-  const featured = projects.filter((p) => p.featured);
+  const featured = getProjects(locale).filter((p) => p.featured);
 
   return (
     <section id="projects" className="py-24 px-6">
@@ -20,20 +22,19 @@ export default function Projects() {
             className="text-sm font-medium uppercase tracking-widest mb-3"
             style={{ color: "var(--accent)" }}
           >
-            Proyectos
+            {t("eyebrow")}
           </p>
           <h2
             className="text-3xl md:text-4xl font-bold tracking-tight"
             style={{ color: "var(--text)" }}
           >
-            Lo que he construido
+            {t("title")}
           </h2>
           <p
             className="mt-4 text-base max-w-xl leading-relaxed"
             style={{ color: "var(--text-muted)" }}
           >
-            Proyectos reales — desde clientes hasta plataformas propias.
-            Cada uno resuelve un problema concreto.
+            {t("subtitle")}
           </p>
         </div>
 
@@ -60,7 +61,7 @@ export default function Projects() {
             onMouseEnter={(e) => (e.currentTarget.style.color = "var(--accent)")}
             onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-muted)")}
           >
-            Ver todos los proyectos
+            {t("viewAll")}
             <ArrowRight size={16} />
           </Link>
         </div>
