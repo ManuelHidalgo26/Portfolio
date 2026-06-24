@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 
-const TO_EMAIL = "hidalgomanu@hotmail.com";
+const TO_EMAIL = "mh977606@gmail.com";
 // Dominio de prueba de Resend (permite enviar sin verificar un dominio propio).
 const FROM_EMAIL = "Portfolio <onboarding@resend.dev>";
 
@@ -37,10 +37,7 @@ export async function POST(req: Request) {
 
     if (error) {
       console.error("Resend error:", error);
-      return NextResponse.json(
-        { error: "send-failed", detail: error.message ?? String(error) },
-        { status: 502 }
-      );
+      return NextResponse.json({ error: "send-failed" }, { status: 502 });
     }
     return NextResponse.json({ ok: true });
   } catch {
