@@ -244,6 +244,7 @@ export const projects: Project[] = [
       en: "Gym management system for Windows, offline-first, designed for the AR/LATAM market. It handles members, memberships, access control, cash register with reconciliation, payments and sales — all working offline on local SQLite. Built in .NET 9 with Avalonia for the UI, clean architecture with MediatR and FluentValidation, EF Core as ORM and HTTP sidecars for hardware (fiscal, biometrics, access). It ships as a single self-contained .exe.",
     },
     tags: [".NET 9", "C#", "Avalonia", "EF Core", "SQLite", "MediatR"],
+    githubUrl: "https://github.com/ManuelHidalgo26/GymForge",
     featured: true,
     type: "desktop",
     caseStudy: {

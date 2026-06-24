@@ -10,6 +10,7 @@ export default function ContactForm() {
   const t = useTranslations("contact.form");
   const [status, setStatus] = useState<Status>("idle");
   const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
+  const [honeypot, setHoneypot] = useState("");
 
   // Pre-carga el asunto y el mensaje cuando se llega desde el cotizador.
   useEffect(() => {
@@ -32,20 +33,15 @@ export default function ContactForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus("loading");
-
-    // Mailto fallback — replace with Resend/EmailJS when ready
     try {
-      const subject = form.subject || t("subjectFallback", { name: form.name });
-      const body = t("mailBody", {
-        name: form.name,
-        email: form.email,
-        message: form.message,
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...form, website: honeypot }),
       });
-      const mailto = `mailto:hidalgomanu@hotmail.com?subject=${encodeURIComponent(
-        subject
-      )}&body=${encodeURIComponent(body)}`;
-      window.location.href = mailto;
+      if (!res.ok) throw new Error("failed");
       setStatus("success");
+      setForm({ name: "", email: "", subject: "", message: "" });
     } catch {
       setStatus("error");
     }
@@ -99,6 +95,17 @@ export default function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+      {/* Honeypot anti-spam: invisible para humanos, los bots lo rellenan */}
+      <input
+        type="text"
+        name="website"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        value={honeypot}
+        onChange={(e) => setHoneypot(e.target.value)}
+        style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }}
+      />
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <div>
           <label style={labelStyle}>{t("name")}</label>

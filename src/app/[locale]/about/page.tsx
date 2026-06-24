@@ -3,6 +3,7 @@ import { ArrowRight, Github, Linkedin, Mail } from "lucide-react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { alternatesFor } from "@/i18n/metadata";
+import CountUpStat from "@/components/CountUpStat";
 
 export async function generateMetadata({
   params,
@@ -99,7 +100,7 @@ export default async function AboutPage({
               {statNumbers.map((number, i) => (
                 <div key={i} className="p-5 rounded-2xl"
                   style={{ background: "var(--bg-card)", border: "1px solid var(--bg-border)" }}>
-                  <p className="text-3xl font-bold mb-1 font-mono" style={{ color: "var(--accent)" }}>{number}</p>
+                  <p className="text-3xl font-bold mb-1 font-mono" style={{ color: "var(--accent)" }}><CountUpStat value={number} /></p>
                   <p className="text-xs" style={{ color: "var(--text-muted)" }}>{statLabels[i]}</p>
                 </div>
               ))}

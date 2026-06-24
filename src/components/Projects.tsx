@@ -1,23 +1,38 @@
 "use client";
 
 import { useTranslations, useLocale } from "next-intl";
-import { useInView } from "react-intersection-observer";
+import { motion, type Variants } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import ProjectCard from "./ProjectCard";
 import { getProjects, type Locale } from "@/lib/projects";
 
+const container: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.1 } },
+};
+
+const item: Variants = {
+  hidden: { opacity: 0, y: 24 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+};
+
 export default function Projects() {
   const t = useTranslations("projectsSection");
   const locale = useLocale() as Locale;
-  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
   const featured = getProjects(locale).filter((p) => p.featured);
 
   return (
     <section id="projects" className="py-24 px-6">
       <div className="max-w-6xl mx-auto">
         {/* Section header */}
-        <div ref={ref} className="mb-14">
+        <motion.div
+          className="mb-14"
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
           <p
             className="text-sm font-medium uppercase tracking-widest mb-3"
             style={{ color: "var(--accent)" }}
@@ -36,21 +51,22 @@ export default function Projects() {
           >
             {t("subtitle")}
           </p>
-        </div>
+        </motion.div>
 
         {/* Grid */}
-        <div
+        <motion.div
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
-          style={{
-            opacity: inView ? 1 : 0,
-            transform: inView ? "translateY(0)" : "translateY(24px)",
-            transition: "opacity 0.6s ease, transform 0.6s ease",
-          }}
+          variants={container}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.15 }}
         >
           {featured.map((project) => (
-            <ProjectCard key={project.slug} project={project} />
+            <motion.div key={project.slug} variants={item}>
+              <ProjectCard project={project} />
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         {/* Ver todos */}
         <div className="mt-10 text-center">

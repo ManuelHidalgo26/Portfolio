@@ -2,8 +2,21 @@
 
 import { useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
+import { motion, type Variants } from "framer-motion";
 import { ArrowDown, Github, Linkedin } from "lucide-react";
 import { Link } from "@/i18n/navigation";
+
+const container: Variants = {
+  hidden: {},
+  show: {
+    transition: { staggerChildren: 0.12, delayChildren: 0.1 },
+  },
+};
+
+const item: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+};
 
 export default function Hero() {
   const t = useTranslations("hero");
@@ -35,108 +48,121 @@ export default function Hero() {
         }}
       />
 
-      {/* Available badge */}
-      <div
-        className="inline-flex items-center gap-2 text-xs font-medium px-3 py-1.5 rounded-full mb-8"
-        style={{
-          background: "rgba(99,102,241,0.1)",
-          border: "1px solid rgba(99,102,241,0.25)",
-          color: "var(--accent)",
-        }}
+      <motion.div
+        variants={container}
+        initial="hidden"
+        animate="show"
+        className="flex flex-col items-center"
       >
-        <span
-          className="w-1.5 h-1.5 rounded-full animate-pulse"
-          style={{ background: "#22c55e" }}
-        />
-        {t("badge")}
-      </div>
-
-      {/* Name */}
-      <h1 className="text-5xl md:text-7xl font-bold tracking-tight leading-tight mb-6">
-        <span style={{ color: "var(--text)" }}>Manuel</span>
-        <br />
-        <span
+        {/* Available badge */}
+        <motion.div
+          variants={item}
+          className="inline-flex items-center gap-2 text-xs font-medium px-3 py-1.5 rounded-full mb-8"
           style={{
-            background: "linear-gradient(135deg, #818cf8 0%, #a78bfa 50%, #818cf8 100%)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            backgroundClip: "text",
+            background: "rgba(99,102,241,0.1)",
+            border: "1px solid rgba(99,102,241,0.25)",
+            color: "var(--accent)",
           }}
         >
-          Hidalgo
-        </span>
-      </h1>
+          <span
+            className="w-1.5 h-1.5 rounded-full animate-pulse"
+            style={{ background: "#22c55e" }}
+          />
+          {t("badge")}
+        </motion.div>
 
-      {/* Title */}
-      <p
-        className="text-lg md:text-xl font-medium mb-4"
-        style={{ color: "var(--text-muted)" }}
-      >
-        {t("title")}
-      </p>
-
-      {/* Description */}
-      <p
-        className="max-w-xl text-base md:text-lg leading-relaxed mb-10"
-        style={{ color: "var(--text-muted)" }}
-      >
-        {t.rich("description", {
-          b: (chunks) => <span style={{ color: "var(--text)" }}>{chunks}</span>,
-        })}
-      </p>
-
-      {/* CTAs */}
-      <div className="flex flex-col sm:flex-row items-center gap-4 mb-16">
-        <Link
-          href="/#projects"
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-medium text-sm transition-all duration-200 hover:scale-105"
-          style={{ background: "var(--accent-dim)", color: "#fff" }}
+        {/* Name */}
+        <motion.h1
+          variants={item}
+          className="text-5xl md:text-7xl font-bold tracking-tight leading-tight mb-6"
         >
-          {t("ctaProjects")}
-          <ArrowDown size={16} />
-        </Link>
-        <Link
-          href="/contact"
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-medium text-sm transition-all duration-200 hover:scale-105"
-          style={{
-            background: "transparent",
-            border: "1px solid var(--bg-border)",
-            color: "var(--text)",
-          }}
-          onMouseEnter={(e) => (e.currentTarget.style.borderColor = "var(--accent)")}
-          onMouseLeave={(e) => (e.currentTarget.style.borderColor = "var(--bg-border)")}
-        >
-          {t("ctaContact")}
-        </Link>
-      </div>
+          <span style={{ color: "var(--text)" }}>Manuel</span>
+          <br />
+          <span
+            style={{
+              background: "linear-gradient(135deg, #818cf8 0%, #a78bfa 50%, #818cf8 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+            }}
+          >
+            Hidalgo
+          </span>
+        </motion.h1>
 
-      {/* Social links */}
-      <div className="flex items-center gap-5">
-        <a
-          href="https://github.com/ManuelHidalgo26"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="transition-colors duration-200"
+        {/* Title */}
+        <motion.p
+          variants={item}
+          className="text-lg md:text-xl font-medium mb-4"
           style={{ color: "var(--text-muted)" }}
-          onMouseEnter={(e) => (e.currentTarget.style.color = "var(--text)")}
-          onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-muted)")}
-          aria-label="GitHub"
         >
-          <Github size={20} />
-        </a>
-        <a
-          href="https://www.linkedin.com/in/manuel-hidalgo-casta%C3%B1os-29116b299/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="transition-colors duration-200"
+          {t("title")}
+        </motion.p>
+
+        {/* Description */}
+        <motion.p
+          variants={item}
+          className="max-w-xl text-base md:text-lg leading-relaxed mb-10"
           style={{ color: "var(--text-muted)" }}
-          onMouseEnter={(e) => (e.currentTarget.style.color = "var(--text)")}
-          onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-muted)")}
-          aria-label="LinkedIn"
         >
-          <Linkedin size={20} />
-        </a>
-      </div>
+          {t.rich("description", {
+            b: (chunks) => <span style={{ color: "var(--text)" }}>{chunks}</span>,
+          })}
+        </motion.p>
+
+        {/* CTAs */}
+        <motion.div variants={item} className="flex flex-col sm:flex-row items-center gap-4 mb-16">
+          <Link
+            href="/#projects"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-medium text-sm transition-all duration-200 hover:scale-105"
+            style={{ background: "var(--accent-dim)", color: "#fff" }}
+          >
+            {t("ctaProjects")}
+            <ArrowDown size={16} />
+          </Link>
+          <Link
+            href="/contact"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-medium text-sm transition-all duration-200 hover:scale-105"
+            style={{
+              background: "transparent",
+              border: "1px solid var(--bg-border)",
+              color: "var(--text)",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.borderColor = "var(--accent)")}
+            onMouseLeave={(e) => (e.currentTarget.style.borderColor = "var(--bg-border)")}
+          >
+            {t("ctaContact")}
+          </Link>
+        </motion.div>
+
+        {/* Social links */}
+        <motion.div variants={item} className="flex items-center gap-5">
+          <a
+            href="https://github.com/ManuelHidalgo26"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition-colors duration-200"
+            style={{ color: "var(--text-muted)" }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = "var(--text)")}
+            onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-muted)")}
+            aria-label="GitHub"
+          >
+            <Github size={20} />
+          </a>
+          <a
+            href="https://www.linkedin.com/in/manuel-hidalgo-casta%C3%B1os-29116b299/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition-colors duration-200"
+            style={{ color: "var(--text-muted)" }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = "var(--text)")}
+            onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-muted)")}
+            aria-label="LinkedIn"
+          >
+            <Linkedin size={20} />
+          </a>
+        </motion.div>
+      </motion.div>
 
       {/* Scroll indicator */}
       <div

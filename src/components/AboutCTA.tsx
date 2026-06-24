@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import { ArrowRight, Mail } from "lucide-react";
 import { useInView } from "react-intersection-observer";
 import { Link } from "@/i18n/navigation";
+import CountUpStat from "./CountUpStat";
 
 const statNumbers = ["4", "1", "3", "100%"];
 
@@ -86,7 +87,7 @@ export default function AboutCTA() {
                     className="text-3xl font-bold mb-1 font-mono"
                     style={{ color: "var(--accent)" }}
                   >
-                    {number}
+                    <CountUpStat value={number} />
                   </p>
                   <p className="text-sm" style={{ color: "var(--text-muted)" }}>
                     {statLabels[i]}
