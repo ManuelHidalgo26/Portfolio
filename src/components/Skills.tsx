@@ -1,58 +1,86 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { useInView } from "react-intersection-observer";
+import { motion } from "framer-motion";
+import {
+  SiReact,
+  SiNextdotjs,
+  SiTypescript,
+  SiTailwindcss,
+  SiFramer,
+  SiSass,
+  SiNodedotjs,
+  SiExpress,
+  SiPrisma,
+  SiPostgresql,
+  SiMongodb,
+  SiSocketdotio,
+  SiRedis,
+  SiDotnet,
+  SiSqlite,
+  SiGit,
+  SiGithub,
+  SiVite,
+  SiPostman,
+  SiVercel,
+} from "react-icons/si";
+import { Hash, AppWindow, Database, Webhook } from "lucide-react";
 
-type Skill = { name: string; icon: string };
+type IconCmp = React.ComponentType<{ size?: number }>;
+type Skill = { name: string; Icon: IconCmp };
 
-const categories: { labelKey: "frontend" | "backend" | "desktop" | "tools"; skills: Skill[] }[] = [
+const categories: {
+  labelKey: "frontend" | "backend" | "desktop" | "tools";
+  skills: Skill[];
+}[] = [
   {
     labelKey: "frontend",
     skills: [
-      { name: "React", icon: "⚛️" },
-      { name: "Next.js", icon: "▲" },
-      { name: "TypeScript", icon: "TS" },
-      { name: "Tailwind CSS", icon: "🎨" },
-      { name: "Framer Motion", icon: "◐" },
-      { name: "SASS", icon: "Ss" },
+      { name: "React", Icon: SiReact },
+      { name: "Next.js", Icon: SiNextdotjs },
+      { name: "TypeScript", Icon: SiTypescript },
+      { name: "Tailwind CSS", Icon: SiTailwindcss },
+      { name: "Framer Motion", Icon: SiFramer },
+      { name: "SASS", Icon: SiSass },
     ],
   },
   {
     labelKey: "backend",
     skills: [
-      { name: "Node.js", icon: "⬡" },
-      { name: "Express", icon: "Ex" },
-      { name: "Prisma", icon: "◈" },
-      { name: "PostgreSQL", icon: "🐘" },
-      { name: "MongoDB", icon: "🍃" },
-      { name: "Socket.io", icon: "⇄" },
-      { name: "Redis", icon: "◆" },
-      { name: "REST API", icon: "⇌" },
+      { name: "Node.js", Icon: SiNodedotjs },
+      { name: "Express", Icon: SiExpress },
+      { name: "Prisma", Icon: SiPrisma },
+      { name: "PostgreSQL", Icon: SiPostgresql },
+      { name: "MongoDB", Icon: SiMongodb },
+      { name: "Socket.io", Icon: SiSocketdotio },
+      { name: "Redis", Icon: SiRedis },
+      { name: "REST API", Icon: Webhook },
     ],
   },
   {
     labelKey: "desktop",
     skills: [
-      { name: ".NET 9", icon: "N" },
-      { name: "C#", icon: "C#" },
-      { name: "Avalonia", icon: "◇" },
-      { name: "EF Core", icon: "Ef" },
-      { name: "SQLite", icon: "🗄" },
+      { name: ".NET 9", Icon: SiDotnet },
+      { name: "C#", Icon: Hash },
+      { name: "Avalonia", Icon: AppWindow },
+      { name: "EF Core", Icon: Database },
+      { name: "SQLite", Icon: SiSqlite },
     ],
   },
   {
     labelKey: "tools",
     skills: [
-      { name: "Git", icon: "⑂" },
-      { name: "GitHub", icon: "⊙" },
-      { name: "Vite", icon: "⚡" },
-      { name: "Postman", icon: "📮" },
-      { name: "Vercel", icon: "▲" },
+      { name: "Git", Icon: SiGit },
+      { name: "GitHub", Icon: SiGithub },
+      { name: "Vite", Icon: SiVite },
+      { name: "Postman", Icon: SiPostman },
+      { name: "Vercel", Icon: SiVercel },
     ],
   },
 ];
 
 function SkillBadge({ skill }: { skill: Skill }) {
+  const { Icon } = skill;
   return (
     <div
       className="flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 cursor-default hover:scale-105"
@@ -70,11 +98,8 @@ function SkillBadge({ skill }: { skill: Skill }) {
         (e.currentTarget as HTMLElement).style.background = "var(--bg-card)";
       }}
     >
-      <span
-        className="text-xs font-mono w-6 text-center shrink-0"
-        style={{ color: "var(--accent)" }}
-      >
-        {skill.icon}
+      <span className="shrink-0 flex items-center" style={{ color: "var(--accent)" }}>
+        <Icon size={18} />
       </span>
       {skill.name}
     </div>
@@ -83,7 +108,6 @@ function SkillBadge({ skill }: { skill: Skill }) {
 
 export default function Skills() {
   const t = useTranslations("skills");
-  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
 
   return (
     <section
@@ -92,7 +116,13 @@ export default function Skills() {
       style={{ borderTop: "1px solid var(--bg-border)" }}
     >
       <div className="max-w-6xl mx-auto">
-        <div ref={ref} className="mb-14">
+        <motion.div
+          className="mb-14"
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
           <p
             className="text-sm font-medium uppercase tracking-widest mb-3"
             style={{ color: "var(--accent)" }}
@@ -111,16 +141,9 @@ export default function Skills() {
           >
             {t("subtitle")}
           </p>
-        </div>
+        </motion.div>
 
-        <div
-          className="flex flex-col gap-10"
-          style={{
-            opacity: inView ? 1 : 0,
-            transform: inView ? "translateY(0)" : "translateY(24px)",
-            transition: "opacity 0.6s ease 0.1s, transform 0.6s ease 0.1s",
-          }}
-        >
+        <div className="flex flex-col gap-10">
           {categories.map((cat) => (
             <div key={cat.labelKey}>
               <h3
