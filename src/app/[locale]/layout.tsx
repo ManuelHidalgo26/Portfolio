@@ -4,6 +4,7 @@ import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { Analytics } from "@vercel/analytics/next";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import { routing } from "@/i18n/routing";
 import { alternatesFor } from "@/i18n/metadata";
 import "../globals.css";
@@ -73,6 +74,7 @@ export default async function LocaleLayout({ children, params }: Props) {
           <Footer />
         </NextIntlClientProvider>
         <Analytics />
+        <GoogleAnalytics gaId="G-MXZ4T4SS90" />
       </body>
     </html>
   );
