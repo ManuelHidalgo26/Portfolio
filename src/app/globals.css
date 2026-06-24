@@ -1,26 +1,59 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --accent: #818cf8;
+  --accent-dim: #6366f1;
+  --bg: #0a0a0a;
+  --bg-card: #111111;
+  --bg-border: #1e1e1e;
+  --text: #f1f5f9;
+  --text-muted: #64748b;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-background: var(--bg);
+  --color-foreground: var(--text);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: var(--accent-dim);
+  color: #fff;
+}
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--bg-border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #2a2a2a; }
+
+/* Utility: muted link that brightens on hover (usable in server components) */
+.link-muted {
+  color: var(--text-muted);
+  transition: color 0.2s;
+}
+.link-muted:hover {
+  color: var(--text);
+}
+.link-accent {
+  color: var(--accent);
+  transition: opacity 0.2s;
+}
+.link-accent:hover {
+  opacity: 0.75;
 }
