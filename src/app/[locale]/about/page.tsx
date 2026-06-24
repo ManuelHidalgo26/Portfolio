@@ -88,7 +88,7 @@ export default async function AboutPage({
                   className="link-muted inline-flex items-center gap-2 text-sm font-medium">
                   <Linkedin size={16} /> LinkedIn
                 </a>
-                <a href="mailto:hidalgomanu@hotmail.com"
+                <a href="mailto:mh977606@gmail.com"
                   className="link-muted inline-flex items-center gap-2 text-sm font-medium">
                   <Mail size={16} /> Email
                 </a>

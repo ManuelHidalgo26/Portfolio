@@ -196,11 +196,11 @@ export default function ContactForm() {
       <p className="text-xs text-center" style={{ color: "var(--text-muted)" }}>
         {t("directEmail")}{" "}
         <a
-          href="mailto:hidalgomanu@hotmail.com"
+          href="mailto:mh977606@gmail.com"
           style={{ color: "var(--accent)" }}
           className="hover:underline"
         >
-          hidalgomanu@hotmail.com
+          mh977606@gmail.com
         </a>
       </p>
     </form>

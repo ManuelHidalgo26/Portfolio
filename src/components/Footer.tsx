@@ -75,7 +75,7 @@ export default function Footer() {
               <Linkedin size={18} />
             </a>
             <a
-              href="mailto:hidalgomanu@hotmail.com"
+              href="mailto:mh977606@gmail.com"
               aria-label="Email"
               className="transition-colors duration-200"
               style={{ color: "var(--text-muted)" }}
