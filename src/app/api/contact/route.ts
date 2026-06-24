@@ -36,7 +36,11 @@ export async function POST(req: Request) {
     });
 
     if (error) {
-      return NextResponse.json({ error: "send-failed" }, { status: 502 });
+      console.error("Resend error:", error);
+      return NextResponse.json(
+        { error: "send-failed", detail: error.message ?? String(error) },
+        { status: 502 }
+      );
     }
     return NextResponse.json({ ok: true });
   } catch {
